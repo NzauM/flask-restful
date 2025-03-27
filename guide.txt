@@ -1,0 +1,14 @@
+School System
+1. See all students through an API
+2. See all teachers through an API
+
+Domain Model
+student => name
+teacher => name
+Course => student, teacher, duration
+
+
+
+
+
+
