@@ -1,6 +1,7 @@
 # create 10 students
-from models import app, Student, db
+from models import Student, db
 from faker import Faker
+from app import app
 
 fake = Faker()
 

@@ -2,6 +2,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
+from extention import bcrypt
+
 
 # No Flask app initialization here.
 # Assuming db and migrate are initialized in app.py
@@ -21,4 +23,22 @@ class Student(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
-    pass
+
+class User(db.Model, SerializerMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    password_hash = db.Column(db.String(120),nullable = False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "Password": self.password_hash
+        }
+    
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+    
