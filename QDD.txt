@@ -1,0 +1,10 @@
+1. What are sessions and cookies?
+   - Cookies. A file that stores user data in the browser
+   - session. A store for user data on the server side. 
+2. How do they work?
+3. What JWT?
+4. How to achieve password encryption.
+   -  install flask bcrypt
+   - import in app
+   - Create an instance
+5. How to achieve access control.
