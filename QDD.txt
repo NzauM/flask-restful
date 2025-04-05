@@ -8,4 +8,9 @@
    - import in app
    - Create an instance
 5. How to achieve access control.
+    - set up user to have a role field
+    - The sign up request will have user.role (User bieng the default)
+    - The login will have a session storing the role.
+    - In the **decorator.py** we create a decorator tha will grant users access based on their role (only admins can access)
+    - the decorator is then added to a route to protect it.  
 6. breakdown coming up

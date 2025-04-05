@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session,  make_response
 from flask_restful import Api,Resource
 from werkzeug.exceptions import BadRequest
 from flask_cors import CORS
@@ -68,7 +68,7 @@ class Login(Resource):
              return {"message": "Invalid credentials"}, 401
         
         session["user_id"] = user.id
-
+        session["role"] = user.role
         return {"Message": "Login Successful"}, 200
 
 api.add_resource(Login, "/login")
@@ -95,19 +95,19 @@ class StudentsApi(Resource):
         all_students = Student.query.all()
         students_list = [std.to_dict() for std in all_students]
         return jsonify(students_list)
-    
+
     @login_required
+    @role_required("admin")
     def post(self):
-        """Creates a new student."""
         data = request.get_json()
-        if not data or 'name' not in data:
-            raise BadRequest("Invalid data")
-        new_student = Student(name=data['name'])
-        db.session.add(new_student)
+        name = data.get('name')
+
+        student = Student(name=name)
+        db.session.add(student)
         db.session.commit()
-        return jsonify({"message": "Student created successfully"}), 201
-    
-    
+
+        return make_response(jsonify({"message": "Student created successfully"})), 201 
+
 # add a route to the resource
 api.add_resource(StudentsApi, '/students', '/students/<int:id>')
 
